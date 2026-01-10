@@ -1,21 +1,24 @@
 package com.arenacesar.arena_api.service;
 
-import com.arenacesar.arena_api.model.Comanda;
-import com.arenacesar.arena_api.model.ItemComanda;
-import com.arenacesar.arena_api.model.Produto;
-import com.arenacesar.arena_api.repository.ComandaRepository;
-import com.arenacesar.arena_api.repository.ItemComandaRepository;
-import com.arenacesar.arena_api.repository.ProdutoRepository;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.arenacesar.arena_api.model.Comanda;
+import com.arenacesar.arena_api.model.ItemComanda;
+import com.arenacesar.arena_api.model.Produto;
+import com.arenacesar.arena_api.repository.ItemComandaRepository;
+import com.arenacesar.arena_api.repository.ComandaRepository;
+import com.arenacesar.arena_api.repository.ProdutoRepository;
+
 @Service
 public class ComandaService {
-
+    
     private final ComandaRepository repository;
     private final ProdutoRepository produtoRepository;
     private final ItemComandaRepository itemRepository;

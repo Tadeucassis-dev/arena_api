@@ -1,4 +1,4 @@
-package br.com.arenacesar.controller;
+package com.arenacesar.arena_api.controller;
 
 import com.arenacesar.arena_api.model.Produto;
 import com.arenacesar.arena_api.repository.ProdutoRepository;
