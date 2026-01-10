@@ -1,8 +1,15 @@
 package com.arenacesar.arena_api.dtos;
 
-import java.util.UUID;
-
 public class AdicionarItemRequest {
-    public UUID produtoId;
-    public Integer quantidade;
+
+    private Long produtoId;
+    private Integer quantidade;
+
+    public Long getProdutoId() {
+        return produtoId;
+    }
+
+    public Integer getQuantidade() {
+        return quantidade;
+    }
 }

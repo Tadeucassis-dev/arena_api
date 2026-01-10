@@ -1,23 +1,26 @@
 package com.arenacesar.arena_api.model;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Getter;
+import lombok.Setter;
+
 import java.math.BigDecimal;
-import java.util.UUID;
 
 @Entity
-@Getter 
+@Getter
 @Setter
 public class ItemComanda {
 
     @Id
-    @GeneratedValue
-    private UUID id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @ManyToOne
+    @JoinColumn(name = "comanda_id")
     private Comanda comanda;
 
     @ManyToOne
+    @JoinColumn(name = "produto_id")
     private Produto produto;
 
     private Integer quantidade;

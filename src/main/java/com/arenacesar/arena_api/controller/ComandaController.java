@@ -1,9 +1,10 @@
 package com.arenacesar.arena_api.controller;
 
-import com.arenacesar.arena_api.model.ItemComanda;
 import com.arenacesar.arena_api.service.ComandaService;
 import com.arenacesar.arena_api.dtos.AdicionarItemRequest;
-import java.util.UUID;
+import com.arenacesar.arena_api.model.ItemComanda;
+
+
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -23,7 +24,10 @@ public class ComandaController {
     }
 
     @PostMapping("/{id}/itens")
-    public ItemComanda adicionarItem(@PathVariable UUID id, @RequestBody AdicionarItemRequest request) {
-        return service.adicionarItem(id, request.produtoId, request.quantidade);
+    public ItemComanda adicionarItem(
+            @PathVariable Long id,
+            @RequestBody AdicionarItemRequest request
+    ) {
+        return service.adicionarItem(id, request.getProdutoId(), request.getQuantidade());
     }
 }
