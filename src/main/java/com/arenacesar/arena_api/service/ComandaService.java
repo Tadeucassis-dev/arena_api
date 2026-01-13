@@ -12,6 +12,7 @@ import com.arenacesar.arena_api.model.Produto;
 import com.arenacesar.arena_api.repository.ComandaRepository;
 import com.arenacesar.arena_api.repository.ItemComandaRepository;
 import com.arenacesar.arena_api.repository.ProdutoRepository;
+import java.util.List;
 
 @Service
 public class ComandaService {
@@ -74,5 +75,35 @@ public class ComandaService {
         produtoRepository.save(produto);
 
         return item;
+    }
+
+    public List<Comanda> listar() {
+        return comandaRepository.findAll();
+    }
+
+    public Comanda abrir(Comanda comanda) {
+        comanda.setStatus("ABERTA");
+        comanda.setDataAbertura(LocalDateTime.now());
+        if (comanda.getValorTotal() == null) {
+            comanda.setValorTotal(BigDecimal.ZERO);
+        }
+        return comandaRepository.save(comanda);
+    }
+
+    public Comanda buscar(Long id) {
+        return comandaRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Comanda não encontrada"));
+    }
+
+    public List<Comanda> listarPorStatus(String status) {
+        return comandaRepository.findByStatus(status);
+    }
+
+    public Comanda fechar(Long id) {
+        Comanda comanda = comandaRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Comanda não encontrada"));
+        comanda.setStatus("FECHADA");
+        comanda.setDataFechamento(LocalDateTime.now());
+        return comandaRepository.save(comanda);
     }
 }
