@@ -3,7 +3,6 @@ package com.arenacesar.arena_api.controller;
 import com.arenacesar.arena_api.model.Produto;
 import com.arenacesar.arena_api.repository.ProdutoRepository;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 @RestController
