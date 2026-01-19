@@ -81,6 +81,17 @@ public class ComandaService {
         return comandaRepository.findAll();
     }
 
+    public Comanda atualizar(Long id, Comanda atualizacao) {
+        Comanda existente = comandaRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Comanda não encontrada"));
+        existente.setNomeCliente(atualizacao.getNomeCliente());
+        existente.setTipoCliente(atualizacao.getTipoCliente());
+        if ("ABERTA".equals(existente.getStatus())) {
+            existente.setValorDayUse(atualizacao.getValorDayUse());
+        }
+        return comandaRepository.save(existente);
+    }
+
     public Comanda abrir(Comanda comanda) {
         comanda.setStatus("ABERTA");
         comanda.setDataAbertura(LocalDateTime.now());
@@ -105,5 +116,11 @@ public class ComandaService {
         comanda.setStatus("FECHADA");
         comanda.setDataFechamento(LocalDateTime.now());
         return comandaRepository.save(comanda);
+    }
+
+    @Transactional
+    public void deletar(Long id) {
+        itemRepository.deleteByComandaId(id);
+        comandaRepository.deleteById(id);
     }
 }

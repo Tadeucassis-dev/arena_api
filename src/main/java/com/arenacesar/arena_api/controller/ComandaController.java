@@ -10,11 +10,15 @@ import java.util.List;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.server.ResponseStatusException;
+import org.springframework.http.HttpStatus;
 
 @RestController
 @RequestMapping("/comandas")
@@ -53,5 +57,18 @@ public class ComandaController {
     @PostMapping("/{id}/fechar")
     public Comanda fechar(@PathVariable Long id) {
         return service.fechar(id);
+    }
+
+    @PutMapping("/{id}")
+    public Comanda atualizar(@PathVariable Long id, @RequestBody Comanda atualizacao) {
+        return service.atualizar(id, atualizacao);
+    }
+
+    @DeleteMapping("/{id}")
+    public void deletar(@PathVariable Long id, @RequestParam(name = "confirmar", defaultValue = "false") boolean confirmar) {
+        if (!confirmar) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Confirme a exclusão com ?confirmar=true");
+        }
+        service.deletar(id);
     }
 }
