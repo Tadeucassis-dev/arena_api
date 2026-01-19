@@ -13,6 +13,9 @@ import com.arenacesar.arena_api.repository.ComandaRepository;
 import com.arenacesar.arena_api.repository.ItemComandaRepository;
 import com.arenacesar.arena_api.repository.ProdutoRepository;
 import java.util.List;
+import com.arenacesar.arena_api.dtos.FechadasResumoResponse;
+import com.arenacesar.arena_api.dtos.FechadasDiarioResponse;
+import java.time.LocalDate;
 
 @Service
 public class ComandaService {
@@ -117,6 +120,42 @@ public class ComandaService {
         comanda.setDataFechamento(LocalDateTime.now());
         return comandaRepository.save(comanda);
     }
+
+    public FechadasResumoResponse resumoFechadas(LocalDate from, LocalDate to) {
+        LocalDateTime start = from.atStartOfDay();
+        LocalDateTime endExclusive = to.plusDays(1).atStartOfDay();
+        List<Comanda> fechadas = comandaRepository.findByStatusAndDataFechamentoBetween("FECHADA", start, endExclusive);
+        long count = fechadas.size();
+        java.math.BigDecimal total = fechadas.stream()
+                .map(Comanda::getValorTotal)
+                .filter(java.util.Objects::nonNull)
+                .reduce(java.math.BigDecimal.ZERO, java.math.BigDecimal::add);
+        java.math.BigDecimal ticketMedio = count > 0
+                ? total.divide(java.math.BigDecimal.valueOf(count), java.math.RoundingMode.HALF_UP)
+                : java.math.BigDecimal.ZERO;
+        return new FechadasResumoResponse(total, count, ticketMedio);
+    }
+
+    public List<FechadasDiarioResponse> diarioFechadas(LocalDate from, LocalDate to) {
+        LocalDateTime start = from.atStartOfDay();
+        LocalDateTime endExclusive = to.plusDays(1).atStartOfDay();
+        List<Comanda> fechadas = comandaRepository.findByStatusAndDataFechamentoBetween("FECHADA", start, endExclusive);
+        java.util.Map<java.time.LocalDate, java.math.BigDecimal> faturamentoPorDia = new java.util.HashMap<>();
+        java.util.Map<java.time.LocalDate, java.lang.Long> qtdPorDia = new java.util.HashMap<>();
+        for (Comanda c : fechadas) {
+            java.time.LocalDate dia = c.getDataFechamento().toLocalDate();
+            java.math.BigDecimal valor = c.getValorTotal() != null ? c.getValorTotal() : java.math.BigDecimal.ZERO;
+            faturamentoPorDia.put(dia, faturamentoPorDia.getOrDefault(dia, java.math.BigDecimal.ZERO).add(valor));
+            qtdPorDia.put(dia, qtdPorDia.getOrDefault(dia, 0L) + 1);
+        }
+        java.util.List<FechadasDiarioResponse> out = new java.util.ArrayList<>();
+        for (java.time.LocalDate dia : faturamentoPorDia.keySet()) {
+            out.add(new FechadasDiarioResponse(dia, qtdPorDia.getOrDefault(dia, 0L), faturamentoPorDia.getOrDefault(dia, java.math.BigDecimal.ZERO)));
+        }
+        out.sort(java.util.Comparator.comparing(FechadasDiarioResponse::getDia));
+        return out;
+    }
+}
 
     @Transactional
     public void deletar(Long id) {

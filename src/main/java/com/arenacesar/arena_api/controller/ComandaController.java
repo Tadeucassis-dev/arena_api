@@ -17,6 +17,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestParam;
+import java.time.LocalDate;
+import com.arenacesar.arena_api.dtos.FechadasResumoResponse;
+import com.arenacesar.arena_api.dtos.FechadasDiarioResponse;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.http.HttpStatus;
 
@@ -58,6 +61,17 @@ public class ComandaController {
     public Comanda fechar(@PathVariable Long id) {
         return service.fechar(id);
     }
+
+    @GetMapping("/fechadas/total")
+    public FechadasResumoResponse totalFechadas(@RequestParam LocalDate from, @RequestParam LocalDate to) {
+        return service.resumoFechadas(from, to);
+    }
+
+    @GetMapping("/fechadas/diario")
+    public java.util.List<FechadasDiarioResponse> diarioFechadas(@RequestParam LocalDate from, @RequestParam LocalDate to) {
+        return service.diarioFechadas(from, to);
+    }
+}
 
     @PutMapping("/{id}")
     public Comanda atualizar(@PathVariable Long id, @RequestBody Comanda atualizacao) {
