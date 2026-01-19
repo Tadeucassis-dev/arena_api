@@ -71,7 +71,6 @@ public class ComandaController {
     public java.util.List<FechadasDiarioResponse> diarioFechadas(@RequestParam LocalDate from, @RequestParam LocalDate to) {
         return service.diarioFechadas(from, to);
     }
-}
 
     @PutMapping("/{id}")
     public Comanda atualizar(@PathVariable Long id, @RequestBody Comanda atualizacao) {

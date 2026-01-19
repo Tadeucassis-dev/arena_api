@@ -155,7 +155,6 @@ public class ComandaService {
         out.sort(java.util.Comparator.comparing(FechadasDiarioResponse::getDia));
         return out;
     }
-}
 
     @Transactional
     public void deletar(Long id) {
