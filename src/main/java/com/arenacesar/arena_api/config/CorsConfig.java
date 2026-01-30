@@ -12,6 +12,7 @@ public class CorsConfig implements WebMvcConfigurer {
         registry.addMapping("/**")
             .allowedOrigins(
                 "https://arenacesar-frontend.onrender.com",
+                "https://arena-cesar.netlify.app",
                 "http://localhost:5173"
             )
             .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
