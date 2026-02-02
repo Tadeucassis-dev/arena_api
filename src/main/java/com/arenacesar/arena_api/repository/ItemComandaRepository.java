@@ -7,4 +7,5 @@ import com.arenacesar.arena_api.model.ItemComanda;
 
 public interface ItemComandaRepository extends JpaRepository<ItemComanda, Long> {
     void deleteByComandaId(Long comandaId);
+    java.util.List<ItemComanda> findByComandaId(Long comandaId);
 }

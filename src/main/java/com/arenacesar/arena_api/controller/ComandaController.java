@@ -72,6 +72,11 @@ public class ComandaController {
         return service.diarioFechadas(from, to);
     }
 
+    @GetMapping("/{id}/itens")
+    public java.util.List<ItemComanda> itens(@PathVariable Long id) {
+        return service.listarItens(id);
+    }
+
     @PutMapping("/{id}")
     public Comanda atualizar(@PathVariable Long id, @RequestBody Comanda atualizacao) {
         return service.atualizar(id, atualizacao);

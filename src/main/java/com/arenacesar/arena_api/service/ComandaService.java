@@ -161,4 +161,8 @@ public class ComandaService {
         itemRepository.deleteByComandaId(id);
         comandaRepository.deleteById(id);
     }
+
+    public java.util.List<ItemComanda> listarItens(Long comandaId) {
+        return itemRepository.findByComandaId(comandaId);
+    }
 }
